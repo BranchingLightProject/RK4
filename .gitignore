@@ -1,0 +1,22 @@
+# executables
+*a.out
+*.o
+
+# debug files
+*debug
+*.mod
+*.S
+
+# images & similar files
+*.pdf
+*.png
+*.jpg
+*.json
+*.txt
+*.csv
+
+# jupyter
+*checkpoint.ipynb
+
+# python
+*.pyc
