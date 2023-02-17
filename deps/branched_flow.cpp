@@ -12,9 +12,9 @@ BranchedFlow::BranchedFlow(std::string filename, u_l_long seed, double shift) {
     int Lx = file.get_rows();
     int Ly = file.get_cols();
 
-    double V[Lx * Ly] = {0.0};
+    double V[Lx * Ly];
 
-    double x[Lx] = {0.0}, y[Ly] = {0.0};
+    double x[Lx], y[Ly];
 
     double x_factor = Lx_real / (double)Lx, y_factor = Ly_real / (double)Ly;
 
@@ -179,7 +179,8 @@ void BranchedFlow::rk4_solve(void) {
 
 // Find c(dr)
 void BranchedFlow::corr_solve(int bins) {
-    double products[bins] = {1.0, 0.0};
+    double products[bins];
+    products[0] = 1.0;
     double v_prom = 0.0, v2_prom = 0.0;
     double Px = 100.0 / (double)bins, p = 0.0;  // progress
 
@@ -236,7 +237,7 @@ void BranchedFlow::corr_solve(int bins) {
 }
 
 void BranchedFlow::corr_solve_2D(int bins_x, int bins_y) {
-    double products[bins_x][bins_y] = {0.0};
+    double products[bins_x][bins_y];
     double v_prom = 0.0, v2_prom = 0.0;
     double Px = 100.0 / (double)bins_x, p = 0.0;  // progress
 
