@@ -36,6 +36,8 @@ void JsonHandler::loads(std::string string) {
     std::string key, value;
     short quote_position = 0;
 
+    json.clear();
+
     for (int i = 0; i < string.length(); i++) {
         char c = string[i];
         if (c == '"') {

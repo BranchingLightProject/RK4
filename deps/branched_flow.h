@@ -42,9 +42,9 @@ class BranchedFlow {
 
     void initialize(int initial = 0);
 
-    void rk4_solve(void);
+    bool rk4_solve(void);
 
-    void corr_solve(int bins = 500);
+    bool corr_solve(int bins = 500);
     void corr_solve_2D(int bins_x = 100, int bins_y = 100);
     double potential_strength(void);
     double potential_average(void);

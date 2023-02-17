@@ -86,7 +86,7 @@ double factor_y = 2.0 * M_PI / period;
 #define paraxial_equation(uy_1, uy, uy1, v) (C_eq * ((uy1 - 2.0 * uy + uy_1) * o_d_eta2 + C_v * v * uy))
 
 // Evolve the initial profile
-void BranchedFlow::rk4_solve(void) {
+bool BranchedFlow::rk4_solve(void) {
     static const double d_Ny = (double)Ny, Px = 100.0 / (double)Nx;
     double p = 0.0;  // progress
 
@@ -174,11 +174,12 @@ void BranchedFlow::rk4_solve(void) {
             fflush(stdout);
         }
     }
+    return true;
 }
 #undef paraxial_equation
 
 // Find c(dr)
-void BranchedFlow::corr_solve(int bins) {
+bool BranchedFlow::corr_solve(int bins) {
     double products[bins];
     products[0] = 1.0;
     double v_prom = 0.0, v2_prom = 0.0;
@@ -234,6 +235,8 @@ void BranchedFlow::corr_solve(int bins) {
     }
 
     corr_length = c_l;
+
+    return true;
 }
 
 void BranchedFlow::corr_solve_2D(int bins_x, int bins_y) {
