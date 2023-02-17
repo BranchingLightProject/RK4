@@ -7,7 +7,7 @@ BranchedFlow::BranchedFlow(std::string filename, u_l_long seed, double shift){
     film = new double[Sx*Sy];
 
     // Potential
-    FileHandler file(filename);
+    CsvHandler file(filename);
 
     int Lx = file.get_rows();
     int Ly = file.get_cols();

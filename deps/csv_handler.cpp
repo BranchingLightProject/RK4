@@ -1,4 +1,4 @@
-#include "file_handler.h"
+#include "csv_handler.h"
 
 CsvHandler::CsvHandler(std::string filename, char delim_char, char comm_char, bool symmetric) {
     std::ifstream file(filename);

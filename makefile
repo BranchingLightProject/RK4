@@ -6,14 +6,14 @@ C_STD = -std=c++14
 
 # Dependecies
 DEPS = deps/branched_flow.cpp
-DEPS_O = deps/inter/interpolate.o deps/random64.o deps/file_handler.o
+DEPS_O = deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o
 INTER = deps/inter/optimization.cpp deps/inter/integration.cpp deps/inter/statistics.cpp deps/inter/ap.cpp deps/inter/alglibmisc.cpp deps/inter/interpolation.cpp deps/inter/linalg.cpp deps/inter/dataanalysis.cpp deps/inter/alglibinternal.cpp deps/inter/specialfunctions.cpp deps/inter/solvers.cpp
 INTER_O =  optimization.o integration.o statistics.o ap.o alglibmisc.o interpolation.o linalg.o dataanalysis.o alglibinternal.o specialfunctions.o solvers.o
 
-all : main.o deps/inter/interpolate.o deps/random64.o deps/file_handler.o
+all : main.o deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o
 
-main.o : deps/inter/interpolate.o deps/random64.o deps/file_handler.o main.cpp $(DEPS)
-	g++ $(C_STD) -O2 deps/inter/interpolate.o deps/random64.o deps/file_handler.o main.cpp $(DEPS) -o $@
+main.o : deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o main.cpp $(DEPS)
+	g++ $(C_STD) -O2 deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o main.cpp $(DEPS) -o $@
 	time ./main.o
 
 deps/inter/interpolate.o :
@@ -25,9 +25,13 @@ deps/random64.o :
 	g++ $(C_STD) -O2 -c deps/random64.cpp
 	mv random64.o deps/random64.o
 
-deps/file_handler.o :
-	g++ $(C_STD) -O2 -c deps/file_handler.cpp
-	mv file_handler.o deps/file_handler.o
+deps/csv_handler.o :
+	g++ $(C_STD) -O2 -c deps/csv_handler.cpp
+	mv csv_handler.o deps/csv_handler.o
+
+deps/json_handler.o :
+	g++ $(C_STD) -O2 -c deps/json_handler.cpp
+	mv json_handler.o deps/json_handler.o
 
 .PHONY : assembler
 assembler : main.cpp $(DEPS) *.h
