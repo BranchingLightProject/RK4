@@ -9,4 +9,4 @@ struct FileNotOpened : public std::exception {
     }
 };
 
-#endif __COMMON_H
+#endif  // __COMMON_H
