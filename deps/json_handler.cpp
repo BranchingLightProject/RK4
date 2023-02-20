@@ -58,3 +58,8 @@ void JsonHandler::loads(std::string string) {
         }
     }
 }
+
+void JsonHandler::load(std::string filename) {
+    read_file(filename);
+    loads(content);
+}
