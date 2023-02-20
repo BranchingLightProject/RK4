@@ -1,7 +1,8 @@
 #include "branched_flow.h"
 
+BranchedFlow::BranchedFlow(std::string filename, u_l_long seed, double shift)
 #if POTENTIAL_SOURCE == 0
-BranchedFlow::BranchedFlow(std::string filename, u_l_long seed, double shift) {
+{
     ran = new CRandom(seed);
     scint = new double[Nx];
     film = new double[Sx * Sy];
@@ -35,7 +36,7 @@ BranchedFlow::BranchedFlow(std::string filename, u_l_long seed, double shift) {
     alglib::spline2dbuildbicubicv(a_x, Lx, a_y, Ly, a_V, 1, inter);
 }
 #else
-BranchedFlow::BranchedFlow(unsigned long long seed) {
+{
     ran = new CRandom(seed);
     scint = new double[Nx];
     film = new double[Sx * Sy];

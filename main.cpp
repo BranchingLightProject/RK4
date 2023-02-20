@@ -37,15 +37,9 @@ int main(int argc, char **argv) {
             INITIAL = 0;
     }
 
-#if POTENTIAL_SOURCE == 0
     BranchedFlow branches(PATH + FILENAME + ".csv", 1);
     branches.initialize(INITIAL);
-    std::cout << "^ Initialized from file " << FILENAME << std::endl;
-#else
-    BranchedFlow branches(1);
-    branches.initialize(INITIAL);
-    std::cout << "^ Initialized from function" << std::endl;
-#endif
+    std::cout << "^ Initialized " << FILENAME << std::endl;
 
     bool ran_rk4 = false, ran_corr = false;
 

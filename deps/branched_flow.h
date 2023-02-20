@@ -32,11 +32,7 @@ class BranchedFlow {
     int n_bins = 0, nx_bins = 0, ny_bins = 0;
 
    public:
-#if POTENTIAL_SOURCE == 0
     BranchedFlow(std::string filename, u_l_long seed, double shift = 0.0);
-#else
-    BranchedFlow(unsigned long long seed);
-#endif
 
     ~BranchedFlow();
 
