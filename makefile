@@ -2,7 +2,7 @@
 DEBUG = -g -Wall -fsanitize=address -fsanitize=leak -fsanitize=undefined
 VAL = --track-origins=yes --leak-check=full
 CACH = --tool=cachegrind
-C_STD = -std=c++14
+C_STD = -std=c++17
 
 # Dependecies
 DEPS = deps/branched_flow.cpp
