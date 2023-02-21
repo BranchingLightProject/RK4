@@ -1,0 +1,10 @@
+{
+    "potential_path": "path/to/potential/",
+    "potential_filename": "potential_name",
+    "random_generator_seed": "1",
+    "initial_condition": "beam|plane",
+    "run_propagation": "true|false",
+    "run_correlation": "true|false",
+    "correlation_bins": "1000",
+    "results_path": "path/to/results"
+}

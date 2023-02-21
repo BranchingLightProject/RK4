@@ -1,12 +1,7 @@
 /**
  * Branched Flow RK4 main function
  *
- * If you pass command line arguments to this program it will override the path and filename (and perhaps
- * the initial wave profile too) defined in here.
- *
- * - The second argument (the first if you don't include the program name) will be the path
- * - The third argument will be the filename
- * - If you pass a fourth argument (it doesn't matter which one) the initial wave profile will be a plane wave
+ * All initial conditions are handled by a `parameters.json` file
  */
 #include <ctime>
 #include <iostream>
@@ -16,42 +11,44 @@
 #include "deps/branched_flow.h"
 #include "deps/json_handler.h"
 
-int INITIAL = 0;
-std::string PATH = "../potentials/ising/";
-std::string FILENAME = "test";
-std::string RESULTS = "./";
+std::string CSV = ".csv";
 
-int main(int argc, char **argv) {
+int main(void) {
     JsonHandler json;
     std::string timestamp = std::to_string(std::time(0));
 
-    // TODO: initial conditions & run controls using json
+    // Load parameters
+    json.load("parameters.json");
+    std::string filename = json.json["potential_filename"];
+    std::string potential_file = json.json["potential_path"] + filename + CSV;
+    u_l_long seed = std::stoi(json.json["random_generator_seed"]);
+    std::string initial_condition = json.json["initial_condition"];
+    std::string results_path = json.json["results_path"];
 
-    if (argc > 1) {
-        PATH = argv[1];
-        FILENAME = argv[2];
-
-        if (argc > 3)
-            INITIAL = 1;
-        else
-            INITIAL = 0;
-    }
-
-    BranchedFlow branches(PATH + FILENAME + ".csv", 1);
-    branches.initialize(INITIAL);
-    std::cout << "^ Initialized " << FILENAME << std::endl;
+    BranchedFlow branches(potential_file, seed);
+    int plane_as_initial = initial_condition == "beam";  // 0 if "beam", 1 if else
+    branches.initialize(plane_as_initial);
+    std::cout << "^ Initialized " << filename << std::endl;
 
     bool ran_rk4 = false, ran_corr = false;
 
-    ran_rk4 = branches.rk4_solve();
-    std::cout << "\r^ RK4 done" << std::endl;
-    ran_corr = branches.corr_solve(1000);
-    std::cout << "\r^ Corr. done" << std::endl;
+    if (json.json["run_propagation"] == "true") {
+        ran_rk4 = branches.rk4_solve();
+        std::cout << "\r^ RK4 done" << std::endl;
 
-    branches.save_potential("../results/potentials/" + FILENAME + ".csv");
-    branches.save_corr("../results/correlation/" + FILENAME + ".csv");
-    branches.save_film("../results/beams/" + FILENAME + ".csv");
-    branches.save_scint("../results/scint/" + FILENAME + ".csv");
+        branches.save_film(results_path + timestamp + "_propagation" + CSV);
+        branches.save_scint(results_path + timestamp + "_scintillation" + CSV);
+    }
+
+    if (json.json["run_correlation"] == "true") {
+        int bins = std::stoi(json.json["correlation_bins"]);
+        ran_corr = branches.corr_solve(bins);
+        std::cout << "\r^ Corr. done" << std::endl;
+
+        branches.save_corr(results_path + filename + "_correlation" + CSV);
+    }
+
+    branches.save_potential(results_path + filename + CSV);
 
     std::map<std::string, std::string> results;
 
@@ -66,7 +63,12 @@ int main(int argc, char **argv) {
         results["correlation_length_units"] = "mm";
     }
 
-    json.dump(results, RESULTS + timestamp + ".json");
+    // Add parameters to result file
+    for (const auto& [key, value] : json.json) {
+        results[key] = value;
+    }
+
+    json.dump(results, results_path + timestamp + ".json");
     std::cout << json.content << std::endl;
 
     return 0;
