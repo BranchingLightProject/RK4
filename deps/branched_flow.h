@@ -25,7 +25,7 @@ class BranchedFlow {
 
     c_double phi[Ny] = {0.0};
     std::vector<double> corr_funct;
-    std::vector<std::vector<double>> corr_funct_2D;
+    std::vector< std::vector<double> > corr_funct_2D;
 
     double dr = 0.0, corr_length = 0.0;
     double dx = 0.0, dy = 0.0;
