@@ -54,6 +54,7 @@ void JsonHandler::loads(std::string string) {
             value += c;
         else if (quote_position == 4) {
             json[key] = value;
+            key = ""; value = "";
             quote_position = (quote_position + 1) % 5;
         }
     }
