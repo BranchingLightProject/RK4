@@ -12,9 +12,11 @@ INTER_O =  optimization.o integration.o statistics.o ap.o alglibmisc.o interpola
 
 all : main.o deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o
 
+run : main.o
+	time ./main.o
+
 main.o : deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o main.cpp $(DEPS)
 	g++ $(C_STD) -O2 deps/inter/interpolate.o deps/random64.o deps/csv_handler.o deps/json_handler.o main.cpp $(DEPS) -o $@
-	time ./main.o
 
 deps/inter/interpolate.o :
 	time g++ $(C_STD) -O2 -c $(INTER)
