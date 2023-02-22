@@ -59,7 +59,7 @@ int main(void) {
     results["potential_strength_units"] = "no_units";
 
     if (ran_corr) {
-        results["correlation_length"] = branches.correlation_length();
+        results["correlation_length"] = std::to_string(branches.correlation_length());
         results["correlation_length_units"] = "mm";
     }
 
