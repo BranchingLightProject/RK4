@@ -43,8 +43,9 @@ void save_results(JsonHandler& json,
     std::cout << json.content << std::endl;
 
     // Log the run
-    std::ofstream outfile(results_path + "log.txt", std::ios_base::app);
-    outfile << potential_filename + "_" + timestamp << std::endl;
+    std::ofstream log(results_path + "log.txt", std::ios_base::app);
+    log << potential_filename + "_" + timestamp << std::endl;
+    log.close();
 }
 
 int main(void) {
