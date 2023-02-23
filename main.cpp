@@ -15,7 +15,7 @@ std::string CSV = ".csv";
 
 void save_results(JsonHandler& json,
                   std::map<std::string, std::string>& parameters,
-                  std::string potential_filename,
+                  std::string filename,
                   std::string timestamp,
                   std::string average,
                   std::string strength,
@@ -39,12 +39,13 @@ void save_results(JsonHandler& json,
         results[key] = value;
     }
 
-    json.dump(results, results_path + potential_filename + "_" + timestamp + ".json");
+    std::string result_filename = filename + "_" + timestamp;
+    json.dump(results, results_path + result_filename + ".json");
     std::cout << json.content << std::endl;
 
     // Log the run
     std::ofstream log(results_path + "log.txt", std::ios_base::app);
-    log << potential_filename + "_" + timestamp << std::endl;
+    log << result_filename << std::endl;
     log.close();
 }
 
@@ -88,7 +89,7 @@ int main(void) {
     save_results(
         json,
         json.json,
-        potential_file,
+        filename,
         timestamp,
         std::to_string(branches.potential_average()),
         std::to_string(branches.potential_strength()),
