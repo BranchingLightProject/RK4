@@ -13,6 +13,39 @@
 
 std::string CSV = ".csv";
 
+void save_results(JsonHandler& json,
+                  std::map<std::string, std::string>& parameters,
+                  std::string timestamp,
+                  std::string average,
+                  std::string strength,
+                  std::string corr_length,
+                  std::string results_path) {
+    std::map<std::string, std::string> results;
+
+    results["timestamp"] = timestamp;
+    results["potential_average"] = average;
+    results["potential_average_units"] = "mm^-2";
+    results["potential_strength"] = strength;
+    results["potential_strength_units"] = "no_units";
+
+    if (corr_length != "") {
+        results["correlation_length"] = corr_length;
+        results["correlation_length_units"] = "mm";
+    }
+
+    // Add parameters to result file
+    for (const auto& [key, value] : parameters) {
+        results[key] = value;
+    }
+
+    json.dump(results, results_path + timestamp + ".json");
+    std::cout << json.content << std::endl;
+
+    // Log the run
+    std::ofstream outfile(results_path + "log.txt", std::ios_base::app);
+    outfile << timestamp << std::endl;
+}
+
 int main(void) {
     JsonHandler json;
     std::string timestamp = std::to_string(std::time(0));
@@ -50,26 +83,14 @@ int main(void) {
 
     branches.save_potential(results_path + filename + CSV);
 
-    std::map<std::string, std::string> results;
-
-    results["timestamp"] = timestamp;
-    results["potential_average"] = std::to_string(branches.potential_average());
-    results["potential_average_units"] = "mm^-2";
-    results["potential_strength"] = std::to_string(branches.potential_strength());
-    results["potential_strength_units"] = "no_units";
-
-    if (ran_corr) {
-        results["correlation_length"] = std::to_string(branches.correlation_length());
-        results["correlation_length_units"] = "mm";
-    }
-
-    // Add parameters to result file
-    for (const auto& [key, value] : json.json) {
-        results[key] = value;
-    }
-
-    json.dump(results, results_path + timestamp + ".json");
-    std::cout << json.content << std::endl;
+    save_results(
+        json,
+        json.json,
+        timestamp,
+        std::to_string(branches.potential_average()),
+        std::to_string(branches.potential_strength()),
+        (ran_corr) ? std::to_string(branches.correlation_length()) : "",
+        results_path);
 
     return 0;
 }
