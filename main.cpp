@@ -84,7 +84,7 @@ int main(void) {
         branches.save_corr(results_path + filename + "_correlation" + CSV);
     }
 
-    branches.save_potential(results_path + filename + CSV);
+    branches.save_potential(results_path + filename + "_potential"+ CSV);
 
     save_results(
         json,
