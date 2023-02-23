@@ -88,6 +88,7 @@ int main(void) {
     save_results(
         json,
         json.json,
+        potential_file,
         timestamp,
         std::to_string(branches.potential_average()),
         std::to_string(branches.potential_strength()),
