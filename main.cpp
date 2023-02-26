@@ -60,7 +60,7 @@ int main(void) {
     std::string initial_condition = json.json["initial_condition"];
     std::string results_path = json.json["results_path"];
 
-    int plane_as_initial = initial_condition == "beam";  // 0 if "beam", 1 if else
+    int plane_as_initial = initial_condition == "plane";  // 1 if "plane", 0 if else
 
     BranchedFlow branches(potential_file, seed);
     branches.initialize(plane_as_initial);
@@ -72,8 +72,8 @@ int main(void) {
         ran_rk4 = branches.rk4_solve();
         std::cout << "\r^ RK4 done" << std::endl;
 
-        branches.save_film(results_path + filename + "_" + timestamp + "_propagation" + CSV);
-        branches.save_scint(results_path + filename + "_" + timestamp + "_scintillation" + CSV);
+        branches.save_film(results_path + filename + "_" + timestamp + "_propagation" + "_" + initial_condition + CSV);
+        branches.save_scint(results_path + filename + "_" + timestamp + "_scintillation" + "_" + initial_condition + CSV);
     }
 
     if (json.json["run_correlation"] == "true") {
