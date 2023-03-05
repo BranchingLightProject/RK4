@@ -192,6 +192,7 @@ bool BranchedFlow::corr_solve(int bins) {
     // Average product by Montecarlo sampling
     for (int i = 1; i < bins; i++, p += Px) {
         double R = i * dr;
+        products[i] = 0.0;
 
         for (int t = 0; t < CORR_STEPS; t++) {
             double x1 = Lx_real * ran->r(), y1 = Ly_real * ran->r();
@@ -257,6 +258,8 @@ void BranchedFlow::corr_solve_2D(int bins_x, int bins_y) {
 
         for (int iy = 0; iy < bins_y; iy++) {
             double Ry = iy * dy;
+
+            products[ix][iy] = 0.0;
 
             for (int t = 0; t < CORR_STEPS; t++) {
                 double x1 = Lx_real * ran->r(), y1 = Ly_real * ran->r();
